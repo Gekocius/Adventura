@@ -43,9 +43,9 @@ public class Hra implements IHra {
     public String vratUvitani() {
         return "**CRITICAL. SYSTEM FAILURE**\n" +
                "*Alarm pomalu utichá, zvuky kolem se zdají být stále dál a dál, ztrácíš vědomí*\n"+
-               "Probouzíš se s bolestí hlavy, na zemi, pomalu se zvedáš a rozhlížíš se kolem dokola. Stázové komory?"+
-               "Co tady dělají stázové komory a kde to vůbec jsi? Poslední vzpomínka… ženský hlas oznamující"+
-               "STABILITY CRITICAL a jméno.. Athena?" +
+               "Probouzíš se s bolestí hlavy, na zemi, pomalu se zvedáš a rozhlížíš se kolem dokola. Stázové komory?\n"+
+               "Co tady dělají stázové komory a kde to vůbec jsi? Poslední vzpomínka… ženský hlas oznamující\n"+
+               "STABILITY CRITICAL a jméno.. Athena?\n" +
                herniPlan.getAktualniProstor().dlouhyPopis();
     }
     /**
