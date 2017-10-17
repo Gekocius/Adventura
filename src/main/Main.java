@@ -14,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -32,12 +34,16 @@ import uiText.TextoveRozhrani;
  */
 public class Main extends Application {
     
+    private TextArea centralText;
+    IHra hra;
+    TextField zadejPrikazTextField;
+    
     @Override
     public void start(Stage primaryStage) {
-        IHra hra = new Hra();
-        BorderPane borderPane = new BorderPane();
         
-        TextArea centralText = new TextArea();
+        centralText = new TextArea();
+        hra = new Hra();
+        BorderPane borderPane = new BorderPane();    
         centralText.setEditable(false);
         centralText.setText(hra.vratUvitani());
         borderPane.setCenter(centralText);
@@ -45,7 +51,7 @@ public class Main extends Application {
         Label zadejPrikazLabel = new Label("Zadej prikaz");
         zadejPrikazLabel.setFont(Font.font("Arial", FontWeight.THIN, 14));
         
-        TextField zadejPrikazTextField = new TextField("...");
+        zadejPrikazTextField = new TextField("...");
         zadejPrikazTextField.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -63,12 +69,23 @@ public class Main extends Application {
             }
         });
         
+        // Obrszek s mapou
+        
+        FlowPane obrazekFlowPane = new FlowPane();
+        ImageView obrazekImageView = new ImageView(new Image(Main.class.getResourceAsStream("/zdroje/mapa.jpg"), 300, 300, false, true));
+        obrazekFlowPane.setAlignment(Pos.CENTER);
+        obrazekFlowPane.prefWidth(200);
+        obrazekFlowPane.getChildren().add(obrazekImageView);
+        
+        // GUI elementy
         FlowPane dolniLista = new FlowPane();
         dolniLista.setAlignment(Pos.CENTER);
         dolniLista.getChildren().addAll(zadejPrikazLabel,zadejPrikazTextField);
+        
+        borderPane.setLeft(obrazekFlowPane);
         borderPane.setBottom(dolniLista);
                 
-        Scene scene = new Scene(borderPane, 500, 500);
+        Scene scene = new Scene(borderPane, 750, 500);
         
         primaryStage.setTitle("Adventura");
         primaryStage.setScene(scene);
