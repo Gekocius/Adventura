@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -36,16 +37,35 @@ public class Main extends Application {
         IHra hra = new Hra();
         BorderPane borderPane = new BorderPane();
         
-        Text centralText = new Text();
+        TextArea centralText = new TextArea();
+        centralText.setEditable(false);
         centralText.setText(hra.vratUvitani());
         borderPane.setCenter(centralText);
         
-        Label zadejPrikaz = new Label("Zadej prikaz");
-        zadejPrikaz.setFont(Font.font("Arial", FontWeight.THIN, 14));
+        Label zadejPrikazLabel = new Label("Zadej prikaz");
+        zadejPrikazLabel.setFont(Font.font("Arial", FontWeight.THIN, 14));
+        
+        TextField zadejPrikazTextField = new TextField("...");
+        zadejPrikazTextField.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                String vstupniPrikaz = zadejPrikazTextField.getText();
+                String odpovedHry = hra.zpracujPrikaz(vstupniPrikaz);
+                
+                centralText.appendText("\n" + vstupniPrikaz + "\n");
+                centralText.appendText(odpovedHry + "\n");
+                
+                if (hra.konecHry()) {
+                    zadejPrikazTextField.setEditable(false);
+                    centralText.appendText(hra.vratEpilog());
+                }
+            }
+        });
         
         FlowPane dolniLista = new FlowPane();
         dolniLista.setAlignment(Pos.CENTER);
-        dolniLista.getChildren().add(zadejPrikaz);
+        dolniLista.getChildren().addAll(zadejPrikazLabel,zadejPrikazTextField);
         borderPane.setBottom(dolniLista);
                 
         Scene scene = new Scene(borderPane, 500, 500);
@@ -53,6 +73,7 @@ public class Main extends Application {
         primaryStage.setTitle("Adventura");
         primaryStage.setScene(scene);
         primaryStage.show();
+        zadejPrikazTextField.requestFocus();
     }
 
     /**
