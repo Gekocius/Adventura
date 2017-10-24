@@ -37,16 +37,16 @@ public class HerniPlan {
         hrac = new Hrac(5);
         
     	// Založení prostorů
-        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.");
-        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba");
-        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením");
-        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.");
-        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem");
-        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed");
-        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy");
-        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba");
-        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka");
-        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI");
+        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",0,0);
+        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",0,0);
+        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",0,0);
+        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",0,0);
+        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",0,0);
+        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",0,0);
+        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",0,0);
+        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",0,0);
+        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",0,0);
+        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI",0,0);
         
         
         // Vytvoření věcí

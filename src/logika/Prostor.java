@@ -28,6 +28,8 @@ public class Prostor {
     private boolean odemceno;
     private Set<Prostor> vychody;   // obsahuje sousední místnosti
     private Map<String, Vec> veciVProstoru;
+    private double posLeft;
+    private double posTop;
     
 
     /**
@@ -38,11 +40,13 @@ public class Prostor {
      * víceslovný název bez mezer.
      * @param popis Popis prostoru.
      */
-    public Prostor(String nazev, String popis) {
+    public Prostor(String nazev, String popis, double posLeft, double posTop) {
         this.nazev = nazev;
         this.popis = popis;
         vychody = new HashSet<>();
         veciVProstoru = new HashMap<>();
+        this.posLeft = posLeft;
+        this.posTop = posTop;
     }
 
     /**
@@ -246,6 +250,20 @@ public class Prostor {
     public boolean jeOdemceno()
     {
     	return odemceno;
+    }
+
+    /**
+     * @return the posLeft
+     */
+    public double getPosLeft() {
+        return posLeft;
+    }
+
+    /**
+     * @return the posTop
+     */
+    public double getPosTop() {
+        return posTop;
     }
     
 }
