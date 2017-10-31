@@ -1,5 +1,10 @@
 package logika;
 
+import java.util.ArrayList;
+import java.util.List;
+import utils.Observer;
+import utils.Subject;
+
 
 /**
  *  Class HerniPlan - třída představující mapu a stav adventury.
@@ -12,12 +17,13 @@ package logika;
  *@author     Michael Kolling, Lubos Pavlicek, Jarmila Pavlickova
  *@version    pro školní rok 2016/2017
  */
-public class HerniPlan {
+public class HerniPlan implements Subject {
     
     private Prostor aktualniProstor;
     private Hrac hrac;
     private Athena athena;
     private Hra hra;
+    private List<Observer> observers =  new ArrayList<Observer>();
     
      /**
      *  Konstruktor který vytváří jednotlivé prostory a propojuje je pomocí východů.
@@ -37,12 +43,12 @@ public class HerniPlan {
         hrac = new Hrac(5);
         
     	// Založení prostorů
-        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",0,0);
-        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",0,0);
-        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",0,0);
-        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",0,0);
-        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",0,0);
-        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",0,0);
+        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",5,0);
+        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",10,0);
+        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",15,0);
+        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",20,0);
+        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",25,0);
+        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",30,0);
         Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",0,0);
         Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",0,0);
         Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",0,0);
@@ -148,6 +154,7 @@ public class HerniPlan {
      */
     public void setAktualniProstor(Prostor prostor) {
        aktualniProstor = prostor;
+       notifyObservers();
     }
     
     /**
@@ -187,6 +194,24 @@ public class HerniPlan {
     public void setHra(Hra hra)
     {
     	this.hra = hra;
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        
+         for (Observer observer : observers) {
+            observer.update();
+        }
     }
     
 

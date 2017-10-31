@@ -5,6 +5,7 @@
  */
 package main;
 
+import gui.Mapa;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,9 +17,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -35,14 +39,18 @@ import uiText.TextoveRozhrani;
 public class Main extends Application {
     
     private TextArea centralText;
+    private Mapa mapa;
     IHra hra;
     TextField zadejPrikazTextField;
+    
     
     @Override
     public void start(Stage primaryStage) {
         
         centralText = new TextArea();
         hra = new Hra();
+        
+        mapa = new Mapa(hra);
         BorderPane borderPane = new BorderPane();    
         centralText.setEditable(false);
         centralText.setText(hra.vratUvitani());
@@ -82,7 +90,7 @@ public class Main extends Application {
         dolniLista.setAlignment(Pos.CENTER);
         dolniLista.getChildren().addAll(zadejPrikazLabel,zadejPrikazTextField);
         
-        borderPane.setLeft(obrazekFlowPane);
+        borderPane.setLeft(mapa);
         borderPane.setBottom(dolniLista);
                 
         Scene scene = new Scene(borderPane, 750, 500);
@@ -92,6 +100,7 @@ public class Main extends Application {
         primaryStage.show();
         zadejPrikazTextField.requestFocus();
     }
+    
 
     /**
      * @param args the command line arguments
