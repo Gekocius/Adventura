@@ -6,6 +6,7 @@
 package main;
 
 import gui.Mapa;
+import gui.MenuLista;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,6 +41,7 @@ public class Main extends Application {
     
     private TextArea centralText;
     private Mapa mapa;
+    private MenuLista menuLista;
     IHra hra;
     TextField zadejPrikazTextField;
     
@@ -51,10 +53,13 @@ public class Main extends Application {
         hra = new Hra();
         
         mapa = new Mapa(hra);
+        menuLista = new MenuLista(hra, this);
+        
         BorderPane borderPane = new BorderPane();    
         centralText.setEditable(false);
         centralText.setText(hra.vratUvitani());
         borderPane.setCenter(centralText);
+        borderPane.setTop(menuLista);
         
         Label zadejPrikazLabel = new Label("Zadej prikaz");
         zadejPrikazLabel.setFont(Font.font("Arial", FontWeight.THIN, 14));
@@ -99,6 +104,18 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         zadejPrikazTextField.requestFocus();
+    }
+
+    public TextArea getCentralText() {
+        return centralText;
+    }
+
+    public Mapa getMapa() {
+        return mapa;
+    }
+
+    public void setHra(IHra hra) {
+        this.hra = hra;
     }
     
 
