@@ -5,10 +5,7 @@
         <group>
             <file>file:/H:/SE/adventura/src/main/Main.java</file>
             <file>file:/H:/SE/adventura/src/gui/Mapa.java</file>
-            <file>file:/H:/SE/adventura/src/utils/Observer.java</file>
             <file>file:/H:/SE/adventura/src/logika/HerniPlan.java</file>
-            <file>file:/H:/SE/adventura/src/utils/Subject.java</file>
-            <file>file:/H:/SE/adventura/src/logika/Prostor.java</file>
             <file>file:/H:/SE/adventura/src/gui/MenuLista.java</file>
         </group>
     </open-files>
