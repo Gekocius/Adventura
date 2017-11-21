@@ -63,6 +63,11 @@ public class HerniPlan implements Subject {
         Vec adminKarta = new Vec("adminKarta", true);
         Vec cip = new Vec("čip", true);
         
+        //TODO: Nastaveni obrazků pro gui
+        idKarta.setObrazek("n");
+        adminKarta.setObrazek("n");
+        cip.setObrazek("n");
+        
         //Speciální předměty
         LangModule langModule = new LangModule("langModule", this);
         Navigace navigace = new Navigace("navigace", this, athena);

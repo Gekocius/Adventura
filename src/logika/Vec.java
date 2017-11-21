@@ -13,16 +13,19 @@ public class Vec {
 	private boolean prenositelnost;
 	private boolean nositelna;
 	private String prozkoumej;
+        private String obrazek;
+
 	/**
 	 * Konstruktor třídy. Nastavuje název věci a zda je možné ji sebrat do inventáře
 	 * 
 	 * @param nazev věci
 	 * @param prenositelnost true pokud je  možno přenášet, jinak false
 	 */
-	public Vec(String nazev, boolean prenositelnost )
+	public Vec(String nazev, boolean prenositelnost)
 	{
 		this.nazev = nazev;
 		this.prenositelnost = prenositelnost;
+                this.obrazek = obrazek;
 	}
 	
 	/**
@@ -106,6 +109,14 @@ public class Vec {
 	public void setNositelna(boolean nositelna) {
 		this.nositelna = nositelna;
 	}
+        
+        public String getObrazek() {
+            return obrazek;
+        }
+
+        public void setObrazek(String obrazek) {
+            this.obrazek = obrazek;
+        }
 
 	
 }

@@ -98,5 +98,6 @@ public class Hrac {
 	public void setOblek(Vec oblek) {
 		this.oblek = oblek;
 	}
+        
 	
 }
