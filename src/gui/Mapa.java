@@ -10,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import logika.Hra;
 import logika.IHra;
 import main.Main;
 import utils.Observer;
@@ -35,10 +34,7 @@ public class Mapa extends AnchorPane implements Observer {
         ImageView obrazekImageView = new ImageView(new Image(Main.class.getResourceAsStream("/zdroje/mapa.jpg"), 300, 300, false, true));
         
         tecka = new Circle(20, Paint.valueOf("red"));
-        
-        //this.setTopAnchor(tecka, 25.0);
-        //this.setLeftAnchor(tecka, 25.0);
-        
+
         this.getChildren().addAll(obrazekImageView, tecka);
         update();
         

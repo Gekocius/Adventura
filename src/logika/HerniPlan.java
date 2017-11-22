@@ -2,6 +2,8 @@ package logika;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import gui.ProstorGui;
 import utils.Observer;
 import utils.Subject;
 
@@ -23,6 +25,7 @@ public class HerniPlan implements Subject {
     private Hrac hrac;
     private Athena athena;
     private Hra hra;
+    private ProstorGui prostorGui;
     private List<Observer> observers =  new ArrayList<Observer>();
     
      /**
@@ -63,11 +66,6 @@ public class HerniPlan implements Subject {
         Vec adminKarta = new Vec("adminKarta", true);
         Vec cip = new Vec("čip", true);
         
-        //TODO: Nastaveni obrazků pro gui
-        idKarta.setObrazek("n");
-        adminKarta.setObrazek("n");
-        cip.setObrazek("n");
-        
         //Speciální předměty
         LangModule langModule = new LangModule("langModule", this);
         Navigace navigace = new Navigace("navigace", this, athena);
@@ -93,6 +91,10 @@ public class HerniPlan implements Subject {
         
         // Vložení věcí
         hrac.vlozVecDoInvetare(idKarta);
+        hrac.vlozVecDoInvetare(new Vec("test",true));
+        komory.vlozVec(new Vec("test2",true));
+        komory.vlozVec(new Vec("test3",true));
+        komory.vlozVec(new Vec("test4",true));
         komory.vlozVec(konzoleKomory);
         laborator.vlozVec(adminKarta);
         chodbaA.vlozVec(konzoleAIC);
@@ -139,7 +141,7 @@ public class HerniPlan implements Subject {
         aiCore.setVychod(chodbaB);
         aiCore.setOdemceno(true);
                 
-        aktualniProstor = komory;  // hra začíná u stázových komor
+        aktualniProstor = komory;;  // hra začíná u stázových komor
     }
     
     /**
@@ -158,8 +160,19 @@ public class HerniPlan implements Subject {
      *@param  prostor nový aktuální prostor
      */
     public void setAktualniProstor(Prostor prostor) {
-       aktualniProstor = prostor;
-       notifyObservers();
+       if(prostorGui != null)
+       {
+           aktualniProstor.removeObserver(prostorGui);
+           aktualniProstor = prostor;
+           aktualniProstor.registerObserver(prostorGui);
+           notifyObservers();
+       }
+       else
+       {
+    	   aktualniProstor = prostor;
+    	   notifyObservers();
+       }
+
     }
     
     /**
@@ -200,17 +213,36 @@ public class HerniPlan implements Subject {
     {
     	this.hra = hra;
     }
+    
+    public void setProstorGui(ProstorGui prostorGui)
+    {
+    	this.prostorGui = prostorGui;
+    }
 
+    /**
+     * Přidá observera
+     * 
+     * @param observer k přidání
+     */
     @Override
     public void registerObserver(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Odebere specifikovaného observera
+     * 
+     * @param observer k odebrání
+     */
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
+    /**
+     * Oznámí změnu stavu objektu všem registrovaným observerům
+     * 
+     */
     @Override
     public void notifyObservers() {
         

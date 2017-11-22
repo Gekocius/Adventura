@@ -1,7 +1,12 @@
 package logika;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import utils.Observer;
+import utils.Subject;
 /**
  * 
  * Třída Hrac představuje postavu hráče ve hře. Je v ní definován i hráčův inventář a potřebné interakce
@@ -11,11 +16,12 @@ import java.util.Map;
  * @version 1.0.0
  *
  */
-public class Hrac {
+public class Hrac implements Subject {
 	
 	private Map<String, Vec> inventar;
 	private int maxKapacita;
 	private Vec oblek;
+	private List<Observer> observers =  new ArrayList<Observer>();
 	
 	/**
 	 * Vytvoří instanci hráče s danou kapacitou inventáře
@@ -56,6 +62,7 @@ public class Hrac {
 	public void vlozVecDoInvetare(Vec vec)
 	{
 		inventar.put(vec.getNazev(), vec);
+		notifyObservers();
 	}
 	/**
 	 * Odebere zadanou věc z inventáře a vráti na ni odkaz
@@ -65,7 +72,9 @@ public class Hrac {
 	 */
 	public Vec odeberVecZInvetare(String nazev)
 	{
-		return inventar.remove(nazev);
+		Vec odebrana = inventar.remove(nazev);
+		notifyObservers();
+		return odebrana;
 	}
 	
 	/**
@@ -94,9 +103,48 @@ public class Hrac {
 	public Vec getOblek() {
 		return oblek;
 	}
-
+	
+	/**
+	 * Nastaví oblek na hráče
+	 * 
+	 * @return oblek
+	 */
+	
 	public void setOblek(Vec oblek) {
 		this.oblek = oblek;
+	}
+
+    /**
+     * Přidá observera
+     * 
+     * @param observer k přidání
+     */
+	@Override
+	public void registerObserver(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+    /**
+     * Odebere specifikovaného observera
+     * 
+     * @param observer k odebrání
+     */
+	@Override
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+		
+	}
+	
+    /**
+     * Oznámí změnu stavu objektu všem registrovaným observerům
+     * 
+     */
+	@Override
+	public void notifyObservers() {
+		for(Observer observer : observers)
+			observer.update();
+		
 	}
         
 	
