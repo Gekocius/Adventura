@@ -30,7 +30,6 @@ public class SlovoOpravit extends AkcniSlovo {
 	@Override
 	public String provedAkci(Athena athena) {
 
-		//TODO Otevřít místnost TimeDrive pokud má hráč na sobě skafandr
 		if(athena.getPlan().getHrac().getOblek().getNazev().equals("skafandr"))
 		{
 			athena.getTimeDrive().setOdemceno(true);

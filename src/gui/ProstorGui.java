@@ -12,25 +12,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import logika.HerniPlan;
 import logika.Vec;
+import main.Main;
 import utils.Observer;
 
 /**
  * Třída, která slouží k zobrazení inventáře prostoru na gui 
  *
- * @author vrad00
+ * @author Daniel Vrána
  */
 public class ProstorGui extends TilePane implements Observer {
     
-    List<ImageView> okna;
-    HerniPlan plan;
+    private List<BatohPredmet> okna;
+    private HerniPlan plan;
+    private Main main;
     
     /**
      * Konstruktor, který vytváří a nastavuje jednotlivé prvky grafického rozhraní inventáře místnosti
      * 
+     * @param main
+     * 
      */
-    public ProstorGui(HerniPlan plan)
+    public ProstorGui(Main main)
     {
-        this.plan = plan;
+    	this.main = main;
+        this.plan = main.getHra().getHerniPlan();
         plan.registerObserver(this);
         plan.getAktualniProstor().registerObserver(this);
         init();
@@ -38,12 +43,13 @@ public class ProstorGui extends TilePane implements Observer {
     
     private void init()
     {
-        okna = new ArrayList<ImageView>();      
+        okna = new ArrayList<BatohPredmet>();      
         this.setMinWidth(200);
         this.setHgap(3);
         this.setVgap(3);
         this.setPrefColumns(3);
         this.setPrefRows(2);
+        plan.getHrac().registerObserver(this);
         update();
         
     }
@@ -54,10 +60,16 @@ public class ProstorGui extends TilePane implements Observer {
      */
     @Override
     public void update() {
+    	
+    	plan.getAktualniProstor().registerObserver(this);
+    	okna.clear();
         
     	for(Vec vec : plan.getAktualniProstor().getVeciVProstoru().values())
     	{
-    		okna.add(new ImageView(new Image("/zdroje/" + vec.getNazev() + ".png",64,64,false,true)));
+    		BatohPredmet temp = new BatohPredmet(main, "seber");
+    		temp.setObrazek(new Image("/zdroje/" + vec.getNazev() + ".png",64,64,false,true));
+    		temp.setPopisek(vec.getNazev());
+    		okna.add(temp);
     	}
     	
         this.getChildren().clear();

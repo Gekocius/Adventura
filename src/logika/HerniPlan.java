@@ -46,16 +46,16 @@ public class HerniPlan implements Subject {
         hrac = new Hrac(5);
         
     	// Založení prostorů
-        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",5,0);
-        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",10,0);
-        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",15,0);
-        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",20,0);
-        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",25,0);
-        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",30,0);
-        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",0,0);
-        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",0,0);
-        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",0,0);
-        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI",0,0);
+        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",220,180);
+        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",160,110);
+        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",230,50);
+        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",70,50);
+        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",70,180);
+        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",430,120);
+        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",430,260);
+        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",690,110);
+        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",700,180);
+        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI",695,65);
         
         
         // Vytvoření věcí
@@ -108,6 +108,7 @@ public class HerniPlan implements Subject {
         
         // Přiřazení východů
         komory.setVychod(chodbaA);
+        komory.setOdemceno(true);
         
         chodbaA.setVychod(komory);
         chodbaA.setVychod(laborator);

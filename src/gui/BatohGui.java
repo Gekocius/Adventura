@@ -20,24 +20,26 @@ import utils.Observer;
  */
 public class BatohGui extends TilePane implements Observer {
     
-    ImageView[] okna;
-    Hrac hrac;
+    private BatohPredmet[] okna;
+    private Hrac hrac;
+    private Main main;
     
     
     /**
      * Konstruktor, který vytváří a nsatavuje jednotlivé prvky grafického rozhraní batohu
      * 
      */
-    public BatohGui(Hrac hrac)
+    public BatohGui(Main main)
     {
-        this.hrac = hrac;
+    	this.main = main;
+        this.hrac = main.getHra().getHerniPlan().getHrac();
         hrac.registerObserver(this);
         init();
     }
     
     private void init()
     {
-        okna = new ImageView[hrac.getMaxKapacita()];       
+        okna = new BatohPredmet[hrac.getMaxKapacita()];       
         this.setMinWidth(200);
         this.setHgap(3);
         this.setVgap(3);
@@ -56,13 +58,14 @@ public class BatohGui extends TilePane implements Observer {
         
         for(int i = 0; i< okna.length; i++)
         {
-        	okna[i] = new ImageView();
+        	okna[i] = new BatohPredmet(main, "odloz");
         }
     	
         int i = 0;
         for (Vec vec : hrac.getInvetar().values()) 
         {
-            okna[i].setImage(new Image("./zdroje/"+vec.getNazev()+".png", 64, 64, false, true));
+            okna[i].setObrazek(new Image("./zdroje/"+vec.getNazev()+".png", 64, 64, false, true));
+            okna[i].setPopisek(vec.getNazev());
             i++;
         }
         this.getChildren().clear();

@@ -34,7 +34,7 @@ public class Prostor implements Subject {
     private Map<String, Vec> veciVProstoru;
     private double posLeft;
     private double posTop;
-    private List<Observer> observers =  new ArrayList<Observer>();
+    private Set<Observer> observers = new HashSet<>();
     
 
     /**
@@ -222,6 +222,7 @@ public class Prostor implements Subject {
     public boolean vlozVec(Vec vec)
     {
 		veciVProstoru.put(vec.getNazev(), vec);
+		this.notifyObservers();
 		return true;
     	
     }

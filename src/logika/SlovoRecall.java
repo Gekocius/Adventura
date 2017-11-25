@@ -23,7 +23,6 @@ public class SlovoRecall extends AkcniSlovo {
 	 */
 	@Override
 	public String provedAkci(Athena athena) {
-		// TODO Auto-generated method stub
 		if(athena.getStavPolozka("motoryOnline") && athena.getStavPolozka("timeDriveOnline"))
 		{
 			athena.getPlan().getHra().setEpilog("Recall activated, gathering four-dimensional locations.. launch in 10..5..\n"
