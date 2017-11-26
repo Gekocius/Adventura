@@ -15,7 +15,7 @@ import utils.Observer;
 /**
  * Třída, která slouží k zobrazení batohu hráče na gui 
  *
- * @author vrad00
+ * @author Daniel Vrána
  */
 public class BatohGui extends TilePane implements Observer {
     
