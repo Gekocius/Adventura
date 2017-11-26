@@ -1,4 +1,11 @@
 package logika;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Třída která implementuje pro hru příkaz prozkoumej
  * 
@@ -9,6 +16,7 @@ package logika;
 public class PrikazProzkoumej implements IPrikaz {
 
 	private static final String NAZEV = "prozkoumej";
+	private int maxParametry = 2;
 	private HerniPlan plan;
 	
 	/**
@@ -104,6 +112,33 @@ public class PrikazProzkoumej implements IPrikaz {
 			plan.getHrac().vlozVecDoInvetare(ziskanaVec);
 		}
 		return ziskanaVec;
+	}
+
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry() {
+
+		return maxParametry;
+	}
+
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		List<String> parametry1 = new ArrayList<>(plan.getAktualniProstor().getVeciVProstoru().keySet());
+		parametry1.add("inventar");
+		Collection<String> parametry2 = plan.getHrac().getInvetar().keySet();
+		HashMap<Integer, Collection<String>> temp = new HashMap<>();
+		temp.put(1, parametry1);
+		temp.put(2, parametry2);
+		return temp;
 	}
 
 

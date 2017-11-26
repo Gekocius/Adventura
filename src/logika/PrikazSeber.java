@@ -1,4 +1,9 @@
 package logika;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Třída která implementuje pro hru příkaz seber. Pomocí něj hráč sbírá předměty.
  * 
@@ -9,6 +14,7 @@ package logika;
 public class PrikazSeber implements IPrikaz {
 
 	private String NAZEV = "seber";
+	private int maxParametry = 1;
 	private HerniPlan plan;
 	
 	/**
@@ -74,6 +80,29 @@ public class PrikazSeber implements IPrikaz {
 	@Override
 	public String getNazev() {
 		return NAZEV;
+	}
+
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry() {
+		
+		return maxParametry;
+	}
+
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		HashMap<Integer, Collection<String>> temp = new HashMap<>();
+		temp.put(1, plan.getAktualniProstor().getVeciVProstoru().keySet());
+		return temp;
 	}
 
 }

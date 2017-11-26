@@ -45,7 +45,7 @@ public class TimeDrive extends Vec implements IPouzitelna {
 		
 		if (nazevNastroje != null) {
 			
-			if (nazevNastroje.equals("součástky")) 
+			if (nazevNastroje.equals("soucastky")) 
 			{
 				athena.setStavPolozka("timeDriveOnline", true);
 				return "Time drive je aktivní!";

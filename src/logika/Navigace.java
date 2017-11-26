@@ -48,9 +48,9 @@ public class Navigace extends Vec implements IPouzitelna {
 		{
 			if(athena.getStavPolozka("motoryOnline"))
 			{
-				plan.getHra().setKonecHry(true);
 				plan.getHra().setEpilog("Vrátil ses úspěšně s lodí na Zemi, avšak bez posádky. Všechny systémy lodi byli při hyper skoku lodi zničeny"
 						+ "díky chybě v AI jádře a všechna data nenávratně ztracena. Nikdo se nikdy nedozví co se pokazilo ani kde jsou všichni ostatní.");
+				plan.getHra().setKonecHry(true);
 				return "Destination - Planet Earth\n Departure in 10..9..";
 			}
 		return "Motory nejsou opravené!";

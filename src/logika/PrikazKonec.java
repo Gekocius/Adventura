@@ -1,5 +1,8 @@
 package logika;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  *  Třída PrikazKonec implementuje pro hru příkaz konec.
  *  Tato třída je součástí jednoduché textové hry.
@@ -12,7 +15,7 @@ package logika;
 public class PrikazKonec implements IPrikaz {
 
     private static final String NAZEV = "konec";
-
+    private int maxParametry = 0;
     private Hra hra;
 
     /**
@@ -51,4 +54,25 @@ public class PrikazKonec implements IPrikaz {
     public String getNazev() {
         return NAZEV;
     }
+
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry() {
+		
+		return maxParametry;
+	}
+
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		return null;
+	}
 }

@@ -1,5 +1,8 @@
 package logika;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  *  Třída implementující toto rozhraní bude ve hře zpracovávat jeden konkrétní příkaz.
  *  Toto rozhraní je součástí jednoduché textové hry.
@@ -8,7 +11,7 @@ package logika;
  *@version    pro školní rok 2016/2017
  *  
  */
-interface IPrikaz {
+public interface IPrikaz {
 	
 	/**
      *  Metoda pro provedení příkazu ve hře.
@@ -28,5 +31,9 @@ interface IPrikaz {
      *  @return nazev prikazu
      */
 	public String getNazev();
+	
+	public int getMaxParametry();
+	
+	public Map<Integer, Collection<String>> getParametry();
 	
 }

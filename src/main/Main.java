@@ -8,7 +8,9 @@ package main;
 import gui.BatohGui;
 import gui.Mapa;
 import gui.MenuLista;
+import gui.PrikazyVstup;
 import gui.ProstorGui;
+import gui.TextVstup;
 import gui.VychodyPanel;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,25 +20,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logika.Hra;
 import logika.IHra;
 import uiText.TextoveRozhrani;
+import utils.Observer;
 
 /**
  * Hlavní třída aplikace, vstupní bod. Zde se nastavuje GUI.
  *
  * @author Daniel Vrána
  */
-public class Main extends Application {
+public class Main extends Application implements Observer {
     
     private TextArea centralText;
     private Mapa mapa;
@@ -44,8 +45,8 @@ public class Main extends Application {
     private ProstorGui prostorGui;
     private MenuLista menuLista;
     private VychodyPanel vychodyPanel;
-    private IHra hra;
-    private TextField zadejPrikazTextField;
+    private Hra hra;
+    private BorderPane borderPane;
     private boolean mapaZobrazena;
       
     @Override
@@ -57,6 +58,7 @@ public class Main extends Application {
     {
         centralText = new TextArea();
         hra = new Hra();
+        hra.registerObserver(this);
         
         mapa = new Mapa(hra);
         batohGui = new BatohGui(this);
@@ -64,27 +66,12 @@ public class Main extends Application {
         menuLista = new MenuLista(hra, this);
         vychodyPanel = new VychodyPanel(this);
         hra.getHerniPlan().setProstorGui(prostorGui);
+        hra.getPlatnePrikazy().odeberPrikaz("konec");
+        centralText.setWrapText(true);
         
         Label zadejPrikazLabel = new Label("Zadej příkaz");
         zadejPrikazLabel.setFont(Font.font("Arial", FontWeight.THIN, 14));
         
-        zadejPrikazTextField = new TextField("...");
-        zadejPrikazTextField.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                String vstupniPrikaz = zadejPrikazTextField.getText();
-                String odpovedHry = hra.zpracujPrikaz(vstupniPrikaz);
-                
-                centralText.appendText("\n" + vstupniPrikaz + "\n");
-                centralText.appendText(odpovedHry + "\n");
-                
-                if (hra.konecHry()) {
-                    zadejPrikazTextField.setEditable(false);
-                    centralText.appendText(hra.vratEpilog());
-                }
-            }
-        });
         centralText.setEditable(false);
         centralText.setText(hra.vratUvitani());
         
@@ -94,7 +81,7 @@ public class Main extends Application {
         secondary.setScene(mapaScene);
         secondary.setTitle("Mapa");
        
-        Button zobrazMapu = new Button("Otevři Mapu");
+        Button zobrazMapu = new Button("Otevři mapu");
         zobrazMapu.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -102,6 +89,7 @@ public class Main extends Application {
 				if(mapaZobrazena)
 				{
 					secondary.close();
+					zobrazMapu.setText("Otevři mapu");
 					mapaZobrazena = false;
 				}
 				else
@@ -124,11 +112,15 @@ public class Main extends Application {
 		});
              
         // GUI elementy       
-        BorderPane borderPane = new BorderPane();    
+        borderPane = new BorderPane();    
         
         FlowPane dolniLista = new FlowPane();
+        VBox dolni = new VBox();
+        PrikazyVstup prikazyVstup = new PrikazyVstup(this);
+        TextVstup textVstup = new TextVstup(this, prikazyVstup);
+        dolni.getChildren().addAll(textVstup,prikazyVstup);
+        dolniLista.getChildren().add(dolni);
         dolniLista.setAlignment(Pos.CENTER);
-        dolniLista.getChildren().addAll(zadejPrikazLabel,zadejPrikazTextField);
         
         VBox levaStrana = new VBox();
         Label batohLabel = new Label("Inventář hráče");
@@ -152,8 +144,7 @@ public class Main extends Application {
         
         primaryStage.setTitle("Adventura");
         primaryStage.setScene(scene);
-        primaryStage.show();
-        zadejPrikazTextField.requestFocus();      
+        primaryStage.show();    
         
     }
  
@@ -180,7 +171,7 @@ public class Main extends Application {
      * 
      * @param hra k nastavení
      */
-    public void setHra(IHra hra) {
+    public void setHra(Hra hra) {
         this.hra = hra;
     }
     
@@ -189,7 +180,7 @@ public class Main extends Application {
      * 
      * @return aktuální instance hry
      */
-    public IHra getHra()
+    public Hra getHra()
     {
     	return this.hra;
     }
@@ -210,6 +201,7 @@ public class Main extends Application {
             {
                 IHra hra = new Hra();
                 TextoveRozhrani ui =  new TextoveRozhrani(hra);
+                ui.hraj();
             }
             else
             {
@@ -219,5 +211,21 @@ public class Main extends Application {
         }
         
     }
+
+    /**
+     * Slouží ke zjišťování stavu hry
+     * 
+     */
+	@Override
+	public void update() {
+		
+		if(hra.konecHry())
+		{
+			centralText.appendText("\n" + hra.vratEpilog());
+			borderPane.setBottom(null);
+			borderPane.setLeft(null);
+			borderPane.setRight(null);
+		}
+	}
     
 }

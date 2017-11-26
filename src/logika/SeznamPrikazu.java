@@ -1,5 +1,6 @@
 package logika;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,16 @@ public class SeznamPrikazu {
     }
     
     /**
+     * Odebere příkaz
+     *
+     *@param  název příkazu k odebrání
+     */
+    public void odeberPrikaz(String nazevPrikazu)
+    {
+    	mapaSPrikazy.remove(nazevPrikazu);
+    }
+    
+    /**
      * Vrací odkaz na instanci třídy implementující rozhraní IPrikaz,
      * která provádí příkaz uvedený jako parametr.
      *
@@ -69,7 +80,7 @@ public class SeznamPrikazu {
      *  Vrací seznam přípustných příkazů, jednotlivé příkazy jsou odděleny mezerou.
      *  
      *  @return     Řetězec, který obsahuje seznam přípustných příkazů
-     */
+     */  
     public String vratNazvyPrikazu() {
         String seznam = "";
         for (String slovoPrikazu : mapaSPrikazy.keySet()){
@@ -78,5 +89,10 @@ public class SeznamPrikazu {
         return seznam;
     }
     
+    public Collection<IPrikaz> getPrikazy()
+    {
+    	return this.mapaSPrikazy.values();
+    }
+      
 }
 

@@ -13,12 +13,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logika.Hra;
-import logika.IHra;
 import main.Main;
 
 /**
@@ -28,7 +26,7 @@ import main.Main;
  */
 public class MenuLista extends MenuBar {
     
-    IHra hra;
+    Hra hra;
     Main main;
     /**
      * Konstruktor. Vytváří všechny potřebné prvky na liště.
@@ -36,7 +34,7 @@ public class MenuLista extends MenuBar {
      * @param hra
      * @param main
      */
-    public MenuLista(IHra hra, Main main)
+    public MenuLista(Hra hra, Main main)
     {
         this.hra = hra;
         this.main = main;
@@ -45,7 +43,7 @@ public class MenuLista extends MenuBar {
     
     private void init()
     {
-        Menu novySoubor = new Menu("Adventura");
+        Menu novySoubor = new Menu("Hra");
         Menu about = new Menu ("Napoveda");
         
         MenuItem novaHra = new MenuItem("Nová hra");

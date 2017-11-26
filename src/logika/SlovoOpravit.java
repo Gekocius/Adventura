@@ -33,7 +33,7 @@ public class SlovoOpravit extends AkcniSlovo {
 		if(athena.getPlan().getHrac().getOblek().getNazev().equals("skafandr"))
 		{
 			athena.getTimeDrive().setOdemceno(true);
-			athena.getPlan().getHrac().vlozVecDoInvetare(new Vec("součástky", true));
+			athena.getPlan().getHrac().vlozVecDoInvetare(new Vec("soucastky", true));
 			return "Máš nasazený skafandr, výborně. Nyní můžeš jít opravit Time Drive. Tohle ti pomůže.\n"
 					+ "*Součástky byly přidány do tvého inventáře*";
 		}

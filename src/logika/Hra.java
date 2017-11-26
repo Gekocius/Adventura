@@ -1,5 +1,11 @@
 package logika;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import utils.Observer;
+import utils.Subject;
+
 /**
  *  Třída Hra - třída představující logiku adventury.
  * 
@@ -12,11 +18,12 @@ package logika;
  *@version    pro školní rok 2016/2017 - 1.0.0
  */
 
-public class Hra implements IHra {
+public class Hra implements IHra, Subject {
     private SeznamPrikazu platnePrikazy;    // obsahuje seznam přípustných příkazů
     private HerniPlan herniPlan;
     private boolean konecHry = false;
     private String epilog;
+    private List<Observer> observers =  new ArrayList<Observer>();
 
     /**
      *  Vytváří hru a inicializuje místnosti (prostřednictvím třídy HerniPlan) a seznam platných příkazů.
@@ -128,6 +135,7 @@ public class Hra implements IHra {
      */
     void setKonecHry(boolean konecHry) {
         this.konecHry = konecHry;
+        notifyObservers();
     }
     
      /**
@@ -138,6 +146,48 @@ public class Hra implements IHra {
      */
      public HerniPlan getHerniPlan(){
         return herniPlan;
+     }
+     
+     /**
+      * Metoda vrací třídu pro práci s kolekcí příkazů
+      * 
+      * @return SeznamPrikazu 
+      */
+     public SeznamPrikazu getPlatnePrikazy()
+     {
+    	 return this.platnePrikazy;
+     }
+
+     /**
+      * Přidá observera
+      * 
+      * @param observer k přidání
+      */
+     @Override
+     public void registerObserver(Observer observer) {
+         observers.add(observer);
+     }
+
+     /**
+      * Odebere specifikovaného observera
+      * 
+      * @param observer k odebrání
+      */
+     @Override
+     public void removeObserver(Observer observer) {
+         observers.remove(observer);
+     }
+
+     /**
+      * Oznámí změnu stavu objektu všem registrovaným observerům
+      * 
+      */
+     @Override
+     public void notifyObservers() {
+         
+          for (Observer observer : observers) {
+             observer.update();
+         }
      }
     
 }

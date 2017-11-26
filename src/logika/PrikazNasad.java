@@ -1,5 +1,10 @@
 package logika;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Třída, která implementuje příkaz nasaď pro hru.
  * 
@@ -9,6 +14,7 @@ package logika;
 public class PrikazNasad implements IPrikaz {
 
 	private static final String NAZEV = "nasad";
+	private int maxParametry = 1;
 	private Hrac hrac;
 	
 	/**
@@ -63,6 +69,35 @@ public class PrikazNasad implements IPrikaz {
 	@Override
 	public String getNazev() {
 		return NAZEV;
+	}
+
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry() {
+
+		return maxParametry;		
+	}
+	
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		Collection<String> tempList = new ArrayList<>();
+		for(Vec vec : hrac.getInvetar().values())
+		{
+			if(vec.jeNositelna())
+				tempList.add(vec.getNazev());
+		}
+		HashMap<Integer,Collection<String>> temp = new HashMap<>();
+		temp.put(1,tempList);
+		return temp;
 	}
 
 }

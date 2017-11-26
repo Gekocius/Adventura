@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8"> 
+</head>
+
+<h1>Stranded</h1>
+<h2>Manuál</h2>
+<h2>Textová verze</h2>
+<p>Tento stručný manuál vás provede základním ovládáním hry. Stranded je textová hra hraná
+v prostředí příkazového řádku.</p>
+<h3>Spuštění hry</h3>
+Pro spuštění je nutno mít naistalován Java SE Runtime Environment 8. Hru lze spustit z příkazového
+řádku zadáním „java -jar adventura.jar“(bez uvozovek).
+<h3>Příkazy</h3>
+Příkazy slouží k interakci se hrou. Zadávají se bez diakritiky. Zadat můžete tyto příkazy:<br>
+<b>napoveda</b> – zobrazí sturučnou nápovědu ke hře se seznamem dostupných příkazů.<br>
+<b>prozkoumej</b> [inventar] [název předmětu] – prozkoumá objekt v místnosti specifikovaný v parametru<br>
+„název předmětu“ parametr „inventar“ je volitelný. Pokud zadaáte parametr „inventar“ prozkoumá<br>
+předmět s daným názvem v inventáři<br>
+<b>pouzij [co] [na co]</b> – použije daný předmět. Pokud je zadán pouze jeden parametr použije daný<br>
+předmět v místnosti. Pokud jsou zadány oba parametry, použije daný předmět na jiný předmět<br>
+v místnosti. Např. pouzij karta konzole pro použití karty na konzoli.<br>
+<b>nasad [oblek]</b> – nasadí specifikovaný oblek na postavu hráče. Oblek musíte mít u sebe v inventáři.<br>
+inventar – zobrazí obsah hráčova inventáře<br>
+<b>jdi [východ]</b> – přejde do další místnosti s použitím specifikovaného východu<br>
+<b>seber [předmět]</b> – sebere specifikovaný předmět a dá jej hráčovi do inventáře, za předpokladu, že<br>
+hráč má ještě v inventáři místo.<br>
+<b>odloz [předmět] - odebere předmět z hráčova inventáře a položí jej do aktuální místnosti.</b>
+<b>konec</b> – ukončí hru
+<h3>Chat bot</h3>
+S chat botem normálně komunikujete. Reaguje na určitá slova, vaším úkolem bude také přijít na jaká.
+Jediné důležité slovo pro tento manuál je slovo „out“ které ukončí konverzaci s botem abyste mohli
+dále pokračovat ve hře.
+
+<h2>Verze s grafickým rozhraním</h2>
+<p>Díky grafickému rozhraní je možné některé akce provádět i bez použití příkazů. V levé části okna vidíte předměty, <br>
+které má postava momentálně u sebe zobrazené pomocí ikonek. Pod inventářem postavy je inventář prostoru, ve kterém se postava<br>
+momentálně nachází. Při kliknutí na ikonku v inventáři postavy odložíte předmět do prostoru, při kliknutí na ikonku v inventáři<br>
+prostoru seberete předmět do hráčova inventáře. </p>
+<p>V pravé části okna je seznam východů pro aktuální prostor. Kliknutím na východ v seznamu se postava přesune do daného prostoru.</p>
+
+<h3>Mapa</h3>
+Zvláštním prvkem v grafickém rozhraní je mapa hry. V levé části okna se nachází tlačítko "Zobraz mapu". Kliknutím na toto tlačítko otevřene<br>
+nové okno s mapou. Červená tečka reprezetuje aktuální pozici hráče. Opětovým kliknutím na tlačítko mapu zavřete. Mapu je také možné zavřít křížkem <br>
+v pavém horním rohu okna mapy.
+</html>

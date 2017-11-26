@@ -1,7 +1,12 @@
 package logika;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+
+import utils.Observer;
+import utils.Subject;
 
 /**
  * 
@@ -12,7 +17,7 @@ import java.util.HashSet;
  *
  */
 
-public class Athena extends Vec implements IPouzitelna {
+public class Athena extends Vec implements IPouzitelna, Subject {
 	
 	private boolean aktivni;
 	private HashSet<AkcniSlovo> akcniSlova;
@@ -20,6 +25,7 @@ public class Athena extends Vec implements IPouzitelna {
 	private HashMap<String, Boolean> stav;
 	private Prostor timeDrive;
 	private HerniPlan plan;
+	private List<Observer> observers = new ArrayList<>();
 	/**
 	 * Konstruktor třídy. Volá předka aby nastavil název a přenositelnost. Také přiřazuje herní plán
 	 * 
@@ -98,6 +104,7 @@ public class Athena extends Vec implements IPouzitelna {
 	 */
 	public void setAktivni(boolean aktivni) {
 		this.aktivni = aktivni;
+		notifyObservers();
 	}
 	
 	/**
@@ -184,5 +191,37 @@ public class Athena extends Vec implements IPouzitelna {
 	 */
 	public void setTimeDrive(Prostor timeDrive) {
 		this.timeDrive = timeDrive;
+	}
+    /**
+     * Přidá observera
+     * 
+     * @param observer k přidání
+     */
+	@Override
+	public void registerObserver(Observer observer) {
+		observers.add(observer);
+		
+	}
+    /**
+     * Odebere specifikovaného observera
+     * 
+     * @param observer k odebrání
+     */
+	@Override
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+		
+	}
+    /**
+     * Oznámí změnu stavu objektu všem registrovaným observerům
+     * 
+     */
+	@Override
+	public void notifyObservers() {
+		
+        for (Observer observer : observers) {
+            observer.update();
+        }
+		
 	}
 }

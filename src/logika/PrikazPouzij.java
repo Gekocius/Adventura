@@ -1,4 +1,9 @@
 package logika;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Třída, která implementuje pro hru příkaz pouzij. Hráč pomocí tohoto příkazu může interagovat s různými předměty.
  * 
@@ -10,6 +15,7 @@ public class PrikazPouzij implements IPrikaz {
 
 	private static final String NAZEV = "pouzij";
 	private HerniPlan plan;
+	private int maxParametry = 2;
 	
 	/**
 	 * Konstruktor třídy, který vytváří novou instanci.
@@ -91,6 +97,32 @@ public class PrikazPouzij implements IPrikaz {
 			plan.getAktualniProstor().vlozVec(ziskanaVec);
 		}
 		return ziskanaVec;
+	}
+	
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry()
+	{
+		return this.maxParametry;
+	}
+	
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		Collection<String> parametry1 = plan.getHrac().getInvetar().keySet();
+		Collection<String> parametry2 = plan.getAktualniProstor().getVeciVProstoru().keySet();
+		HashMap<Integer, Collection<String>> temp = new HashMap<>();
+		temp.put(1, parametry1);
+		temp.put(2, parametry2);
+		return temp;
 	}
 	
 	

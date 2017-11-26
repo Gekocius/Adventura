@@ -1,11 +1,9 @@
 package gui;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import logika.HerniPlan;
-import logika.Hra;
 import logika.IHra;
 import logika.Prostor;
 import main.Main;
@@ -52,7 +50,6 @@ public class VychodyPanel extends ListView<String> implements Observer {
 	
 	private void onMouseClicked()
 	{
-		System.out.println(this.getSelectionModel().getSelectedItem());
 		String odpoved = hra.zpracujPrikaz("jdi " + this.getSelectionModel().getSelectedItem());
 		main.getCentralText().appendText("\n" + odpoved);
 	}

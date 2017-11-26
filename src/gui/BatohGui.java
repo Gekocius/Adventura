@@ -6,7 +6,6 @@
 package gui;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import logika.Hrac;
 import logika.Vec;
@@ -26,7 +25,7 @@ public class BatohGui extends TilePane implements Observer {
     
     
     /**
-     * Konstruktor, který vytváří a nsatavuje jednotlivé prvky grafického rozhraní batohu
+     * Konstruktor, který vytváří a nastavuje jednotlivé prvky grafického rozhraní batohu
      * 
      */
     public BatohGui(Main main)
@@ -64,7 +63,7 @@ public class BatohGui extends TilePane implements Observer {
         int i = 0;
         for (Vec vec : hrac.getInvetar().values()) 
         {
-            okna[i].setObrazek(new Image("./zdroje/"+vec.getNazev()+".png", 64, 64, false, true));
+            okna[i].setObrazek(new Image("/zdroje/"+vec.getNazev()+".png", 64, 64, false, true));
             okna[i].setPopisek(vec.getNazev());
             i++;
         }
