@@ -1,4 +1,8 @@
 package logika;
+
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Třída, která implementuje příkaz inventar pro hru. Zajistí vypsání hráčova inventáře
  * 
@@ -10,6 +14,7 @@ public class PrikazInventar implements IPrikaz {
 
 	private static final String NAZEV = "inventar";
 	private Hrac hrac;
+	private int maxParametry = 0;
 	/**
 	 * Konstruktor který založí novou instanci třídy.
 	 * 
@@ -43,6 +48,25 @@ public class PrikazInventar implements IPrikaz {
 	public String getNazev() {
 		
 		return NAZEV;
-	}  
+	}
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 */
+	@Override
+	public int getMaxParametry() {
+		
+		return maxParametry;
+	}
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		return null;
+	}
 
 }

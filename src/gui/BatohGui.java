@@ -6,42 +6,69 @@
 package gui;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import logika.Hrac;
 import logika.Vec;
+import main.Main;
 import utils.Observer;
 
 /**
+ * Třída, která slouží k zobrazení batohu hráče na gui 
  *
  * @author vrad00
  */
 public class BatohGui extends TilePane implements Observer {
     
-    ImageView[] okna;
-    Hrac hrac;
+    private BatohPredmet[] okna;
+    private Hrac hrac;
+    private Main main;
     
-    public BatohGui(Hrac hrac)
+    
+    /**
+     * Konstruktor, který vytváří a nastavuje jednotlivé prvky grafického rozhraní batohu
+     * 
+     */
+    public BatohGui(Main main)
     {
-        this.hrac = hrac;
+    	this.main = main;
+        this.hrac = main.getHra().getHerniPlan().getHrac();
+        hrac.registerObserver(this);
         init();
     }
     
     private void init()
     {
-        okna = new ImageView[hrac.getMaxKapacita()];
-        this.getChildren().addAll(okna);
+        okna = new BatohPredmet[hrac.getMaxKapacita()];       
+        this.setMinWidth(200);
+        this.setHgap(3);
+        this.setVgap(3);
+        this.setPrefColumns(3);
+        this.setPrefRows(2);
         update();
+        
     }
 
+    /**
+     * Aktualizuje stav objektu, znovu načte batoh hráče po změně
+     * 
+     */
     @Override
     public void update() {
         
-        int i = 0;
-        for (Vec vec  : hrac.getInvetar().values()) 
+        for(int i = 0; i< okna.length; i++)
         {
-            okna[i].setImage(new Image("zdroje/" + vec.getNazev()));
+        	okna[i] = new BatohPredmet(main, "odloz");
         }
+    	
+        int i = 0;
+        for (Vec vec : hrac.getInvetar().values()) 
+        {
+            okna[i].setObrazek(new Image("/zdroje/"+vec.getNazev()+".png", 64, 64, false, true));
+            okna[i].setPopisek(vec.getNazev());
+            i++;
+        }
+        this.getChildren().clear();
+        this.getChildren().addAll(okna);
     }
     
     

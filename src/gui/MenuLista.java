@@ -13,24 +13,28 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logika.Hra;
-import logika.IHra;
 import main.Main;
 
 /**
+ *Třída, která slouží jako horní lišta menu na hlavním okně.
  *
- * @author vrad00
+ * @author Daniel Vrana
  */
 public class MenuLista extends MenuBar {
     
-    IHra hra;
+    Hra hra;
     Main main;
-    public MenuLista(IHra hra, Main main)
+    /**
+     * Konstruktor. Vytváří všechny potřebné prvky na liště.
+     * 
+     * @param hra
+     * @param main
+     */
+    public MenuLista(Hra hra, Main main)
     {
         this.hra = hra;
         this.main = main;
@@ -39,13 +43,14 @@ public class MenuLista extends MenuBar {
     
     private void init()
     {
-        Menu novySoubor = new Menu("Adventura");
-        Menu about = new Menu ("Help");
+        Menu novySoubor = new Menu("Hra");
+        Menu about = new Menu ("Napoveda");
         
         MenuItem novaHra = new MenuItem("Nová hra");
         //new ImageView(new Image(Main.class.getResourceAsStream("/zdroje/ikona.png")))
         novaHra.setAccelerator(KeyCombination.keyCombination("Ctrl+H"));
         MenuItem konecHry = new MenuItem("Konec hry");
+        konecHry.setAccelerator(KeyCombination.keyCombination("Ctrl+K"));
         
         novySoubor.getItems().addAll(novaHra, konecHry);
         

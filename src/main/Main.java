@@ -5,8 +5,13 @@
  */
 package main;
 
+import gui.BatohGui;
 import gui.Mapa;
 import gui.MenuLista;
+import gui.PrikazyVstup;
+import gui.ProstorGui;
+import gui.TextVstup;
+import gui.VychodyPanel;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,112 +20,176 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logika.Hra;
 import logika.IHra;
 import uiText.TextoveRozhrani;
+import utils.Observer;
 
 /**
+ * Hlavní třída aplikace, vstupní bod. Zde se nastavuje GUI.
  *
- * @author vrad00
+ * @author Daniel Vrána
  */
-public class Main extends Application {
+public class Main extends Application implements Observer {
     
     private TextArea centralText;
     private Mapa mapa;
+    private BatohGui batohGui;
+    private ProstorGui prostorGui;
     private MenuLista menuLista;
-    IHra hra;
-    TextField zadejPrikazTextField;
-    
-    
+    private VychodyPanel vychodyPanel;
+    private Hra hra;
+    private BorderPane borderPane;
+    private boolean mapaZobrazena;
+      
     @Override
     public void start(Stage primaryStage) {
-        
+        initGui(primaryStage);
+    }
+    
+    private void initGui(Stage primaryStage)
+    {
         centralText = new TextArea();
         hra = new Hra();
+        hra.registerObserver(this);
         
         mapa = new Mapa(hra);
+        batohGui = new BatohGui(this);
+        prostorGui = new ProstorGui(this);
         menuLista = new MenuLista(hra, this);
+        vychodyPanel = new VychodyPanel(this);
+        hra.getHerniPlan().setProstorGui(prostorGui);
+        hra.getPlatnePrikazy().odeberPrikaz("konec");
+        centralText.setWrapText(true);
         
-        BorderPane borderPane = new BorderPane();    
-        centralText.setEditable(false);
-        centralText.setText(hra.vratUvitani());
-        borderPane.setCenter(centralText);
-        borderPane.setTop(menuLista);
-        
-        Label zadejPrikazLabel = new Label("Zadej prikaz");
+        Label zadejPrikazLabel = new Label("Zadej příkaz");
         zadejPrikazLabel.setFont(Font.font("Arial", FontWeight.THIN, 14));
         
-        zadejPrikazTextField = new TextField("...");
-        zadejPrikazTextField.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                String vstupniPrikaz = zadejPrikazTextField.getText();
-                String odpovedHry = hra.zpracujPrikaz(vstupniPrikaz);
-                
-                centralText.appendText("\n" + vstupniPrikaz + "\n");
-                centralText.appendText(odpovedHry + "\n");
-                
-                if (hra.konecHry()) {
-                    zadejPrikazTextField.setEditable(false);
-                    centralText.appendText(hra.vratEpilog());
-                }
-            }
-        });
+        centralText.setEditable(false);
+        centralText.setText(hra.vratUvitani());
         
-        // Obrszek s mapou
+        Stage secondary = new Stage();
+        Scene mapaScene = new Scene(mapa);
         
-        FlowPane obrazekFlowPane = new FlowPane();
-        ImageView obrazekImageView = new ImageView(new Image(Main.class.getResourceAsStream("/zdroje/mapa.jpg"), 300, 300, false, true));
-        obrazekFlowPane.setAlignment(Pos.CENTER);
-        obrazekFlowPane.prefWidth(200);
-        obrazekFlowPane.getChildren().add(obrazekImageView);
+        secondary.setScene(mapaScene);
+        secondary.setTitle("Mapa");
+       
+        Button zobrazMapu = new Button("Otevři mapu");
+        zobrazMapu.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				if(mapaZobrazena)
+				{
+					secondary.close();
+					zobrazMapu.setText("Otevři mapu");
+					mapaZobrazena = false;
+				}
+				else
+				{
+					secondary.show();
+					zobrazMapu.setText("Zavři mapu");
+					mapaZobrazena = true;
+				}
+			}
+		});
         
-        // GUI elementy
+        secondary.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        	
+        	@Override
+        	public void handle(WindowEvent event)
+        	{
+        		mapaZobrazena = false;
+        		zobrazMapu.setText("Otevři mapu");
+        	}
+		});
+             
+        // GUI elementy       
+        borderPane = new BorderPane();    
+        
         FlowPane dolniLista = new FlowPane();
+        VBox dolni = new VBox();
+        PrikazyVstup prikazyVstup = new PrikazyVstup(this);
+        TextVstup textVstup = new TextVstup(this, prikazyVstup);
+        dolni.getChildren().addAll(textVstup,prikazyVstup);
+        dolniLista.getChildren().add(dolni);
         dolniLista.setAlignment(Pos.CENTER);
-        dolniLista.getChildren().addAll(zadejPrikazLabel,zadejPrikazTextField);
         
-        borderPane.setLeft(mapa);
+        VBox levaStrana = new VBox();
+        Label batohLabel = new Label("Inventář hráče");
+        Label veciVProstoruLabel = new Label("Věci v místnosti");
+        levaStrana.getChildren().addAll(batohLabel, batohGui, veciVProstoruLabel, prostorGui, zobrazMapu);
+        levaStrana.setAlignment(Pos.TOP_CENTER);
+        levaStrana.setLayoutY(0);
+        
+        VBox pravaStrana = new VBox();
+        Label vychodyLabel = new Label("Východy z prostoru");
+        pravaStrana.getChildren().addAll(vychodyLabel, vychodyPanel);
+        pravaStrana.setAlignment(Pos.TOP_CENTER);
+        
+        borderPane.setCenter(centralText);
+        borderPane.setTop(menuLista);
+        borderPane.setLeft(levaStrana);
         borderPane.setBottom(dolniLista);
-                
+        borderPane.setRight(pravaStrana);
+                       
         Scene scene = new Scene(borderPane, 750, 500);
         
         primaryStage.setTitle("Adventura");
         primaryStage.setScene(scene);
-        primaryStage.show();
-        zadejPrikazTextField.requestFocus();
+        primaryStage.show();    
+        
     }
-
+ 
+    /**
+     * Vrátí odkaz na výpisovou TextArea v hlavním okně
+     * 
+     * @return centralText
+     */
     public TextArea getCentralText() {
         return centralText;
     }
 
+    /**
+     * Vrátí odkaz na instanci mapy
+     * 
+     * @return mapa
+     */
     public Mapa getMapa() {
         return mapa;
     }
 
-    public void setHra(IHra hra) {
+    /**
+     * Nastaví novou instanci hry pro hlavní okno
+     * 
+     * @param hra k nastavení
+     */
+    public void setHra(Hra hra) {
         this.hra = hra;
+    }
+    
+    /**
+     * Vrátí aktuální instanci hry
+     * 
+     * @return aktuální instance hry
+     */
+    public Hra getHra()
+    {
+    	return this.hra;
     }
     
 
     /**
-     * @param args the command line arguments
+     * Vstupní metoda aplikace
+     * 
+     * @param args argumenty z příkazové řádky
      */
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -132,6 +201,7 @@ public class Main extends Application {
             {
                 IHra hra = new Hra();
                 TextoveRozhrani ui =  new TextoveRozhrani(hra);
+                ui.hraj();
             }
             else
             {
@@ -141,5 +211,21 @@ public class Main extends Application {
         }
         
     }
+
+    /**
+     * Slouží ke zjišťování stavu hry
+     * 
+     */
+	@Override
+	public void update() {
+		
+		if(hra.konecHry())
+		{
+			centralText.appendText("\n" + hra.vratEpilog());
+			borderPane.setBottom(null);
+			borderPane.setLeft(null);
+			borderPane.setRight(null);
+		}
+	}
     
 }

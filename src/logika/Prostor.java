@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import utils.Observer;
+import utils.Subject;
+
 /**
  * Trida Prostor - popisuje jednotlivé prostory (místnosti) hry
  *
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
  * @author Michael Kolling, Lubos Pavlicek, Jarmila Pavlickova
  * @version pro školní rok 2016/2017
  */
-public class Prostor {
+public class Prostor implements Subject {
 
     private String nazev;
     private String popis;
@@ -30,6 +33,7 @@ public class Prostor {
     private Map<String, Vec> veciVProstoru;
     private double posLeft;
     private double posTop;
+    private Set<Observer> observers = new HashSet<>();
     
 
     /**
@@ -217,6 +221,7 @@ public class Prostor {
     public boolean vlozVec(Vec vec)
     {
 		veciVProstoru.put(vec.getNazev(), vec);
+		this.notifyObservers();
 		return true;
     	
     }
@@ -230,6 +235,11 @@ public class Prostor {
     public Vec odeberVec(String nazev)
     {
     	return veciVProstoru.remove(nazev);
+    }
+    
+    public Map<String, Vec> getVeciVProstoru()
+    {
+    	return veciVProstoru;
     }
     
     /**
@@ -253,17 +263,54 @@ public class Prostor {
     }
 
     /**
-     * @return the posLeft
+     * Vrátí pozici od leva pro zobrazení na mapě
+     * 
+     * @return pozice od leva
      */
     public double getPosLeft() {
         return posLeft;
     }
 
     /**
-     * @return the posTop
+     * Vrátí pozici od hora pro zobrazení na mapě
+     * 
+     * @return pozice od prava
      */
     public double getPosTop() {
         return posTop;
     }
+
+    /**
+     * Přidá observera
+     * 
+     * @param observer k přidání
+     */
+	@Override
+	public void registerObserver(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+    /**
+     * Odebere specifikovaného observera
+     * 
+     * @param observer k odebrání
+     */
+	@Override
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+		
+	}
+	
+    /**
+     * Oznámí změnu stavu objektu všem registrovaným observerům
+     * 
+     */
+	@Override
+	public void notifyObservers() {
+		for(Observer observer : observers)
+			observer.update();
+		
+	}
     
 }

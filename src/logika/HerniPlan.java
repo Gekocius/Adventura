@@ -2,6 +2,8 @@ package logika;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import gui.ProstorGui;
 import utils.Observer;
 import utils.Subject;
 
@@ -23,6 +25,7 @@ public class HerniPlan implements Subject {
     private Hrac hrac;
     private Athena athena;
     private Hra hra;
+    private ProstorGui prostorGui;
     private List<Observer> observers =  new ArrayList<Observer>();
     
      /**
@@ -43,16 +46,16 @@ public class HerniPlan implements Subject {
         hrac = new Hrac(5);
         
     	// Založení prostorů
-        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",5,0);
-        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",10,0);
-        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",15,0);
-        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",20,0);
-        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",25,0);
-        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",30,0);
-        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",0,0);
-        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",0,0);
-        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",0,0);
-        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI",0,0);
+        Prostor komory = new Prostor("komory", "Místnost se stázovými komorami, všechny jsou prázdné.",220,180);
+        Prostor chodbaA = new Prostor("chodba-a", "Obyčejná chodba",160,110);
+        Prostor laborator = new Prostor("laborator", "Laboratoř s různým vybavením",230,50);
+        Prostor timeDrive = new Prostor("time-drive", "Místnost s časoprostorovým pohonem, není tu žádný vzduch.",70,50);
+        Prostor motory = new Prostor("motory", "Místnost s hyperpohonem",70,180);
+        Prostor aiControl = new Prostor("AI-Control", "Kulatá místnost s holografickým projektorem uprostřed",430,120);
+        Prostor mustek = new Prostor("můstek", "Hlavní kontrolní středisko lodi. Zde se nachází všechny řidící systémy",430,260);
+        Prostor chodbaB = new Prostor("chodba-b", "Další obyčejná chodba",690,110);
+        Prostor obytne = new Prostor("obydlí", "V této místnosti přespává celá posádka",700,180);
+        Prostor aiCore = new Prostor("AI-Core","Jádro AI. Zde se nachází všechny systémy a moduly AI",695,65);
         
         
         // Vytvoření věcí
@@ -62,11 +65,6 @@ public class HerniPlan implements Subject {
         Vec idKarta = new Vec("karta", true);
         Vec adminKarta = new Vec("adminKarta", true);
         Vec cip = new Vec("čip", true);
-        
-        //TODO: Nastaveni obrazků pro gui
-        idKarta.setObrazek("n");
-        adminKarta.setObrazek("n");
-        cip.setObrazek("n");
         
         //Speciální předměty
         LangModule langModule = new LangModule("langModule", this);
@@ -93,6 +91,10 @@ public class HerniPlan implements Subject {
         
         // Vložení věcí
         hrac.vlozVecDoInvetare(idKarta);
+        hrac.vlozVecDoInvetare(new Vec("test",true));
+        komory.vlozVec(new Vec("test2",true));
+        komory.vlozVec(new Vec("test3",true));
+        komory.vlozVec(new Vec("test4",true));
         komory.vlozVec(konzoleKomory);
         laborator.vlozVec(adminKarta);
         chodbaA.vlozVec(konzoleAIC);
@@ -106,6 +108,7 @@ public class HerniPlan implements Subject {
         
         // Přiřazení východů
         komory.setVychod(chodbaA);
+        komory.setOdemceno(true);
         
         chodbaA.setVychod(komory);
         chodbaA.setVychod(laborator);
@@ -139,7 +142,7 @@ public class HerniPlan implements Subject {
         aiCore.setVychod(chodbaB);
         aiCore.setOdemceno(true);
                 
-        aktualniProstor = komory;  // hra začíná u stázových komor
+        aktualniProstor = komory;;  // hra začíná u stázových komor
     }
     
     /**
@@ -158,8 +161,19 @@ public class HerniPlan implements Subject {
      *@param  prostor nový aktuální prostor
      */
     public void setAktualniProstor(Prostor prostor) {
-       aktualniProstor = prostor;
-       notifyObservers();
+       if(prostorGui != null)
+       {
+           aktualniProstor.removeObserver(prostorGui);
+           aktualniProstor = prostor;
+           aktualniProstor.registerObserver(prostorGui);
+           notifyObservers();
+       }
+       else
+       {
+    	   aktualniProstor = prostor;
+    	   notifyObservers();
+       }
+
     }
     
     /**
@@ -200,17 +214,36 @@ public class HerniPlan implements Subject {
     {
     	this.hra = hra;
     }
+    
+    public void setProstorGui(ProstorGui prostorGui)
+    {
+    	this.prostorGui = prostorGui;
+    }
 
+    /**
+     * Přidá observera
+     * 
+     * @param observer k přidání
+     */
     @Override
     public void registerObserver(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Odebere specifikovaného observera
+     * 
+     * @param observer k odebrání
+     */
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
+    /**
+     * Oznámí změnu stavu objektu všem registrovaným observerům
+     * 
+     */
     @Override
     public void notifyObservers() {
         

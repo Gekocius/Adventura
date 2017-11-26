@@ -1,5 +1,10 @@
 package logika;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  *  Třída PrikazJdi implementuje pro hru příkaz jdi.
  *  Tato třída je součástí jednoduché textové hry.
@@ -10,6 +15,7 @@ package logika;
 public class PrikazJdi implements IPrikaz {
     private static final String NAZEV = "jdi";
     private HerniPlan plan;
+    private int maxParametry = 1;
     
     /**
     *  Konstruktor třídy
@@ -62,5 +68,31 @@ public class PrikazJdi implements IPrikaz {
     public String getNazev() {
         return NAZEV;
     }
+
+	/**
+	 * Metoda vrací maximální počet parametrů pro daný příkaz
+	 * 
+	 * @return maximální počet parametrů
+	 */
+	@Override
+	public int getMaxParametry() {
+		
+		return maxParametry;
+	}
+
+	/**
+	 * Metoda vrací mapu kolekcí. Kolekce obsahují všechny možné parametry pro příkaz.
+	 * 
+	 * @return mapa kolekcí
+	 */
+	@Override
+	public Map<Integer, Collection<String>> getParametry()
+	{
+		HashMap<Integer, Collection<String>> temp = new HashMap<>();
+		temp.put(1, plan.getAktualniProstor().getVychody().stream()
+				.map(p -> p.getNazev())
+				.collect(Collectors.toList()));
+		return temp;
+	}
 
 }
